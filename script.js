@@ -11,13 +11,11 @@ const init = () => {
 const dino = {
     x: 0,
     y: 100,
-    w: 30,
-    h: 40,
-    radius: 25,
+    velocity: 3,
     color: "green",
     draw() {
         ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.w, this.h)
+        ctx.fillRect(this.x, this.y, 30, 40)
     },
 };
 
@@ -26,13 +24,17 @@ const draw = () => {
     dino.draw()
 
     if (jump) {
+        dino.velocity *= 0.97;
         if (dino.y > 20) {
-            dino.y -= 3;
+            dino.y -= dino.velocity;
         } else {
             jump = false;
         }
     } else if (dino.y < 100) {
-        dino.y += 3;
+        if (dino.velocity < 3) dino.velocity *= 1.03;
+        dino.y += dino.velocity;
+    } else {
+        dino.velocity = 3;
     }
 
     window.requestAnimationFrame(draw);

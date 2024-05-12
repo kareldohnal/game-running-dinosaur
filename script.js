@@ -3,6 +3,7 @@ console.log("hello world!");
 const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 let jump = false;
+let lastCactus = 0;
 
 const init = () => {
     window.requestAnimationFrame(draw);
@@ -52,8 +53,24 @@ class Path {
     }
 }
 
+class Cactus {
+    constructor(x, y, color) {
+        this.x = x || 600;
+        this.y = y || 100;
+        this.color = color || "red";
+        this.moving = false;
+    }
+
+    draw(ctx) {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, 30, 40);
+    }
+}
+
 const path = new Path();
 const path2 = new Path(600, 130, "white");
+const cactus = new Cactus();
+const cactus2 = new Cactus();
 
 const draw = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -83,6 +100,36 @@ const draw = () => {
         dino.y += dino.velocity;
     } else {
         dino.velocity = 3;
+    }
+
+    cactus.draw(ctx);
+    cactus2.draw(ctx);
+
+    if (lastCactus > 300) {
+        if (Math.random() > 0.99) {
+            lastCactus = 0
+            if (!cactus.moving) {
+                cactus.moving = true;
+                cactus.x = 600;
+            } else if (!cactus2.moving) {
+                cactus2.moving = true;
+                cactus2.x = 600;
+            } else lastCactus += 3;
+        } else lastCactus += 3;
+    } else lastCactus += 3;
+
+    if (cactus.moving) {
+        cactus.x -= 3;
+        if (cactus.x < -30) {
+            cactus.moving = false;
+        }
+    }
+
+    if (cactus2.moving) {
+        cactus2.x -= 3;
+        if (cactus2.x < -30) {
+            cactus2.moving = false;
+        }
     }
 
     window.requestAnimationFrame(draw);

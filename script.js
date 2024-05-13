@@ -4,6 +4,7 @@ const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 let jump = false;
 let lastCactus = 0;
+let gameOver = false;
 
 let fpsInterval, startTime, now, then, elapsed;
 const init = (fps) => {
@@ -77,7 +78,19 @@ const path2 = new Path(600, 130, "white");
 const cactus = new Cactus();
 const cactus2 = new Cactus();
 
+const collisionDetection = () => {
+    if (dino.x + 26 > cactus.x && dino.x < cactus.x + 26 && dino.y + 36 > cactus.y
+        || dino.x + 26 > cactus2.x && dino.x < cactus2.x + 26 && dino.y + 36 > cactus2.y) {
+        gameOver = true;
+    }
+}
+
 const draw = () => {
+    if (gameOver) {
+        return
+    }
+
+    collisionDetection();
     window.requestAnimationFrame(draw);
 
     now = Date.now();

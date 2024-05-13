@@ -4,6 +4,7 @@ const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 let jump = false;
 let lastCactus = 0;
+let score = 0;
 let gameOver = false;
 
 let fpsInterval, startTime, now, then, elapsed;
@@ -158,7 +159,10 @@ const draw = () => {
             }
         }
 
-        window.requestAnimationFrame(draw);
+        score += 1;
+        ctx.fillStyle = "white";
+        ctx.font = "24px VT323";
+        ctx.fillText(`HIGH 00000 ${String(score).padStart(5, "0")}`, 400, 30);
     }
 }
 
